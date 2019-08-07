@@ -24,6 +24,18 @@ function Footer() {
   );
 }
 
+function Popular_selections() {
+  return (
+    <div>
+    <button className="Selections"><h2>Popular</h2></button>
+    <button className="Selections"><h2>Now playing</h2></button>
+    <button className="Selections"><h2>Top rated</h2></button>
+    <button className="Selections"><h2>Latests</h2></button>
+    <button className="Selections"><h2>Upcoming</h2></button>
+    </div>
+  )
+}
+
 function Print_movies() {
 
 }
@@ -72,16 +84,15 @@ class App extends React.Component {
             placeholder="Search movies..." onFocus={(e) => e.target.placeholder = ""} onBlur={(e) => e.target.placeholder = "Search movies..."} 
             onChange={this.handleUserInput}
             value={this.state.userInput}/>
+        <Popular_selections/>
         <h1 className="Title-section">Popular movies</h1>
         <h1>{this.state.userInput}</h1>
         <div className="Movie-view">
         <img className="Image-movie" src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/keym7MPn1icW1wWfzMnW3HeuzWU.jpg" onMouseOver={e => console.log(e)}></img>
         <img className="Image-movie" src="https://image.tmdb.org/t/p/w600_and_h900_bestv2/keym7MPn1icW1wWfzMnW3HeuzWU.jpg" onMouseOver={e => console.log(e)}></img>
-           </div>
+        </div>
         <div><span>{items.results[0].title}</span></div>
-     
-      
-        </body>
+      </body>
         <Footer/>
         </div>
       );
