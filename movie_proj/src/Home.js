@@ -1,10 +1,9 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
-import { Link } from 'react-router-dom'
 import { PopularSelections } from './PopularSelections'
 import { API_SEARCH, API_KEY, API_POPULAR, language } from './constants'
 import { getSearchUrl } from './utils'
+import { MovieView } from './MovieView'
 
 export class Home extends React.Component {
   constructor(props) {
@@ -85,7 +84,6 @@ export class Home extends React.Component {
                 <img src={logo} className="App-logo-loading" alt="logo" />
                 </div>
     } else {
-      console.log(items.id)
        return (
          <div className="App-body">
           <input className="Search-bar" type="text" 
@@ -100,15 +98,7 @@ export class Home extends React.Component {
         <button onClick={this.decrementPage}>Previous</button>
         <div>{this.state.page}</div>
         <button onClick={this.incrementPage}>Next</button>
-        <div className="Movie-view">
-          {items.map((movie) => (
-            <Link to={`/movie/${movie.id}`}>
-              <img key={movie.id} className="Image-movie"
-              src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} 
-              alt={`${movie.title}`}/>
-            </Link>
-          ))}
-        </div>
+        <MovieView items={items}/>
         </div>
       );
     }

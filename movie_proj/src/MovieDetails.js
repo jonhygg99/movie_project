@@ -34,7 +34,7 @@ export function MovieDetails({ match }) {
           <h1>{item.title}</h1>
           <h3>{item.status}</h3>
           <p>{item.overview}</p>
-          <h3>{item.genres && item.genres.map((genre) => (<p>{genre.name}</p>)) || 'No genres'}</h3>
+          <h3>{(item.genres && item.genres.map((genre) => (<p key ={genre.id}>{genre.name}</p>))) || 'No genres'}</h3>
           <h3>{item.runtime}'</h3>
           <h1>Trailer error</h1>
       </div>
