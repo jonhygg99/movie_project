@@ -12,8 +12,8 @@ export class PopularSelections extends React.Component {
   }
   
   changeColor() {
-    const newColor_back = this.state.color_back == white ? purple : white;
-    const newColor_letter = this.state.color_letter == white ? black : white;
+    const newColor_back = this.state.color_back === white ? purple : white;
+    const newColor_letter = this.state.color_letter === white ? black : white;
     this.setState({ 
       color_back: newColor_back,
       color_letter: newColor_letter,
@@ -24,7 +24,7 @@ export class PopularSelections extends React.Component {
   return (
     <div className="Selection-type">
       <h2 className="Selections" 
-      onClick={this.changeColor} 
+      onClick={this.changeColor}
       style={{background: this.state.color_back, 
       color: this.state.color_letter}}>Popular</h2>
       <h2 className="Selections">Now playing</h2>
