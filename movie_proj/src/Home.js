@@ -95,9 +95,11 @@ export class Home extends React.Component {
         <PopularSelections value={this.state.selection}/>
         <h1>{this.state.userInput}</h1>
         <h1>Pages {this.state.max_pages}</h1>
-        <button onClick={this.decrementPage}>Previous</button>
-        <div>{this.state.page}</div>
-        <button onClick={this.incrementPage}>Next</button>
+        <div className="changePage">
+          <button onClick={this.decrementPage}>Previous</button>
+          <p>{this.state.page}</p>
+          <button className="incrementPage" onClick={this.incrementPage}>Next</button>
+        </div>
         <MovieView items={items}/>
         </div>
       );
@@ -119,7 +121,6 @@ export class Home extends React.Component {
     //this.timeout = setTimeout(function () {
     //  setInput()
     //}, 500);
-    
   }
   decrementPage () {
     const newPage = this.state.page - 1

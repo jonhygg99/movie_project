@@ -97,12 +97,19 @@
 .Image-movie {
   align-items: center;
   justify-content: center;
-    border-radius: 8px;
-    width: 20%;
-    min-width: 300px;
-    margin-left: 2%;
-    margin-bottom: 2%;
+  border-radius: 8px;
+  width: 20%;
+  min-width: 300px;
+  margin-left: 2%;
+  margin-bottom: 2%;
   }
+
+.changePage {
+  display: flex;
+  text-align: center;
+  font-size: 13px;
+  vertical-align: middle;
+}
 
 @keyframes App-logo-spin {
   from {
