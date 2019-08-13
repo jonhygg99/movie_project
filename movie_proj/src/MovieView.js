@@ -11,7 +11,7 @@ export class MovieView extends React.Component {
            src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} 
            alt={`${movie.title}`}/>
          </Link>
-       ))) || <h1>No movie found, try another name</h1>}
+       ))) || <h1>No movie found, try by another name</h1>}
       </div>
     );
   }

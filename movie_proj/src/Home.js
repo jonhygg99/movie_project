@@ -4,6 +4,7 @@ import { PopularSelections } from './PopularSelections'
 import { API_SEARCH, API_KEY, API_POPULAR, language } from './constants'
 import { getSearchUrl } from './utils'
 import { MovieView } from './MovieView'
+import { debounce } from 'lodash'
 
 export class Home extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export class Home extends React.Component {
         selection: 'popular?',
         userInput: '',
         items: [],
-        isLoaded: false,
+        isLoading: true,
         page: 1,
         max_pages: 1
       };
@@ -28,62 +29,68 @@ export class Home extends React.Component {
     .then(json => {
       this.setState({ 
         items: json.results, 
-        isLoaded: true,
+        isLoading: false,
         max_pages: json.total_pages
        });
     });
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const delay = 500
+    var timeoutID
     if (prevState.userInput !== this.state.userInput || 
       prevState.page !== this.state.page) {
         if (prevState.userInput !== this.state.userInput)
           this.setState({page: 1});
         if (this.state.userInput === '' && 
-        (prevState.userInput !== this.state.userInput)) {
+        (prevState.userInput !== this.state.userInput || this.state.page === 1) ) {
+          this.timeout = setTimeout( () =>
           fetch(API_POPULAR)
           .then(response => response.json())
           .then(json => {
             this.setState({
               selection: 'popular?',
               items: json.results, 
-              isLoaded: true,
-              page: 1,
+              isLoading: false,
               max_pages: json.total_pages
              });
-          });
+          }), delay);
         } else if (this.state.userInput === '' && (prevState.page !== this.state.page)) {
+          this.timeout = setTimeout( () =>
           fetch(API_SEARCH + this.state.selection + API_KEY + language + '&page=' + this.state.page)
           .then(response => response.json())
           .then(json => {
             this.setState({ 
               items: json.results, 
-              isLoaded: true,
+              isLoading: false,
               max_pages: json.total_pages
              });
-          });
+          }), delay);
         } else {
+          this.timeout = setTimeout( () =>
           fetch(getSearchUrl(this.state.userInput, this.state.page))
           .then(response => response.json())
           .then(json => {
           this.setState({ 
             selection: '',
             items: json.results, 
-            isLoaded: true,
+            isLoading: false,
             max_pages: json.total_pages });
-          });
+          }), delay);
         }
       }
+      //clearTimeout(this.timeout)
+
   }
 
   render() {
-    var { items, isLoaded } = this.state
+    var { items, isLoading } = this.state
 
-    if (!isLoaded) {
-      return <div className="Loading">
-                <img src={logo} className="App-logo-loading" alt="logo" />
-                </div>
-    } else {
+    // if (isLoading) {
+    //   return <div className="Loading">
+    //             <img src={logo} className="App-logo-loading" alt="logo" />
+    //             </div>
+    // } else {
        return (
          <div className="App-body">
           <input className="Search-bar" type="text" 
@@ -93,17 +100,17 @@ export class Home extends React.Component {
             onChange={this.handleUserInput}
             value={this.state.userInput}/>
         <PopularSelections value={this.state.selection}/>
-        <h1>{this.state.userInput}</h1>
+        <h1>Input: {this.state.userInput}</h1>
         <h1>Pages {this.state.max_pages}</h1>
         <div className="changePage">
-          <button onClick={this.decrementPage}>Previous</button>
-          <p>{this.state.page}</p>
-          <button className="incrementPage" onClick={this.incrementPage}>Next</button>
+          <button className="Selections" id="decrement"onClick={this.decrementPage}>Previous</button>
+          <h1 className="changePageNumber">{this.state.page}</h1>
+          <button className="Selections" id="increment" onClick={this.incrementPage}>Next</button>
         </div>
         <MovieView items={items}/>
         </div>
       );
-    }
+    //}
   }
 
   handleUserInput(e) {
