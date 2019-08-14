@@ -7,3 +7,5 @@ export const white = '#f5f5f5'
 export const blue = '#0080ff'
 export const black = '#000000'
 export const purple = '#b682ec'
+export const delay = 500
+export const shortDelay = 200

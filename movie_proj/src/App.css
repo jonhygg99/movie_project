@@ -82,7 +82,9 @@
 }
 
 .PopularSelections {
-
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .Selections, .SelectionsOn {
@@ -94,6 +96,7 @@
   border-radius: 12px;
   padding: 5px 30px;
   margin: 5px;
+  margin-left: %;
   outline: none;
 }
 
@@ -107,15 +110,28 @@
   text-align: center;
 }
 
-.Image-movie {
-  align-items: center;
-  justify-content: center;
+.Image-movie, .ImageNotFound {
   border-radius: 8px;
-  width: 20%;
-  min-width: 300px;
+  width: 300px;
+  height: 450px;
   margin-left: 2%;
   margin-bottom: 2%;
-  }
+  position: relative;
+  object-fit: fill;
+  object-position: 0 0;
+
+}
+
+.ImageNotFoundCenter {
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  left: 50%;
+  margin-left: -50px;
+  top: 50%;
+  margin-top: -50px;
+  color: #8842d5;
+}
 
 .changePage {
   display: flex;

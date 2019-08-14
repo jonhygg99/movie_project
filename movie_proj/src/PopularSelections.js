@@ -1,7 +1,7 @@
 import React from 'react'
 
     export const PopularSelections = () => (
-    <div className="PopularSelectons">
+    <div className="PopularSelections">
       <button className="SelectionsOn">Popular</button>
       <button className="Selections">Now playing</button>
       <button className="Selections">Top rated</button>

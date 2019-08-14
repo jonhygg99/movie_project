@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import { PopularSelections } from './PopularSelections'
-import { API_SEARCH, API_KEY, API_POPULAR, language } from './constants'
+import { API_SEARCH, API_KEY, API_POPULAR, language, delay, shortDelay } from './constants'
 import { getSearchUrl } from './utils'
 import { MovieView } from './MovieView'
 import { debounce } from 'lodash'
@@ -36,7 +36,6 @@ export class Home extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const delay = 500
     var timeoutID
     if (prevState.userInput !== this.state.userInput || 
       prevState.page !== this.state.page) {
@@ -77,6 +76,7 @@ export class Home extends React.Component {
             isLoading: false,
             max_pages: json.total_pages });
           }), delay);
+          console.log(this.state.items)
         }
       }
       //clearTimeout(this.timeout)
@@ -101,12 +101,12 @@ export class Home extends React.Component {
             value={this.state.userInput}/>
         <PopularSelections value={this.state.selection}/>
         <h1>Input: {this.state.userInput}</h1>
-        <h1>Pages {this.state.max_pages}</h1>
         <div className="changePage">
-          <button className="Selections" id="decrement"onClick={this.decrementPage}>Previous</button>
+          <button className="Selections" id="decrement" onClick={this.decrementPage}>Previous</button>
           <h1 className="changePageNumber">{this.state.page}</h1>
           <button className="Selections" id="increment" onClick={this.incrementPage}>Next</button>
         </div>
+        <h1>{this.state.max_pages} pages</h1>
         <MovieView items={items}/>
         </div>
       );
@@ -114,28 +114,22 @@ export class Home extends React.Component {
   }
 
   handleUserInput(e) {
-    // Clear the timeout if it has already been set.
-    // This will prevent the previous task from executing
-    // if it has been less than <MILLISECONDS>
     clearTimeout(this.timeout);
-
-    const value = e.target.value
     this.setState({
       userInput: e.target.value
     });
-
-    // Make a new timeout set to go off in 800ms
-    //this.timeout = setTimeout(function () {
-    //  setInput()
-    //}, 500);
   }
   decrementPage () {
     const newPage = this.state.page - 1
+    this.timeout = setTimeout( () =>
     this.setState({ page: newPage < 1 ? 1 : newPage })
+    , shortDelay);
   }
   incrementPage () {
     const newPage = this.state.page + 1
+    this.timeout = setTimeout( () =>
     this.setState({ page: newPage > this.state.max_pages ? this.state.page : newPage})
+    , shortDelay);
   }
 }
 
