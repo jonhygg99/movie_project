@@ -1,10 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
 import { PopularSelections } from './PopularSelections'
-import { API_SEARCH, API_KEY, API_POPULAR, language, delay, shortDelay } from './constants'
-import { getSearchUrl } from './utils'
+import { API_SEARCH, API_KEY, language, delay, shortDelay } from './constants'
 import { MovieView } from './MovieView'
-import { debounce } from 'lodash'
 
 export class Home extends React.Component {
   constructor(props) {
@@ -20,6 +17,7 @@ export class Home extends React.Component {
        this.handleUserInput = this.handleUserInput.bind(this)
        this.decrementPage = this.decrementPage.bind(this)
        this.incrementPage = this.incrementPage.bind(this)
+       this.updateSelection = this.updateSelection.bind(this)
        this.timeout = null
   }
 
@@ -61,19 +59,19 @@ export class Home extends React.Component {
     //             </div>
     // } else {
        return (
-         <div className="App-body">
-          <input className="Search-bar" type="text" 
-            placeholder="Search movies..." 
-            onFocus={(e) => e.target.placeholder = ""} 
-            onBlur={(e) => e.target.placeholder = "Search movies..."}
+         <div className='App-body'>
+          <input className='Search-bar' type='text'
+            placeholder='Search movies...' 
+            onFocus={(e) => e.target.placeholder = ''} 
+            onBlur={(e) => e.target.placeholder = 'Search movies...'}
             onChange={this.handleUserInput}
             value={this.state.userInput}/>
-        <PopularSelections value={this.state.selection}/>
+        <PopularSelections value={this.state.selection} updateSelection={this.updateSelection}/>
         <h1>Input: {this.state.userInput}</h1>
-        <div className="changePage">
-          <button className="SelectionOff" id="decrement" onClick={this.decrementPage}>Previous</button>
-          <h1 className="changePageNumber">{this.state.page}</h1>
-          <button className="SelectionOff" id="increment" onClick={this.incrementPage}>Next</button>
+        <div className='changePage'>
+          <button className='SelectionOff' id='decrement' onClick={this.decrementPage}>Previous</button>
+          <h1 className='changePageNumber'>{this.state.page}</h1>
+          <button className='SelectionOff' id='increment' onClick={this.incrementPage}>Next</button>
         </div>
         <h1>{this.state.max_pages} pages</h1>
         <MovieView items={items}/>
@@ -82,11 +80,18 @@ export class Home extends React.Component {
     //}
   }
 
+  updateSelection = (value) => {
+    this.setState({selection:value}, ()=>console.log(this.state.selection))
+}
+
+//   updateData=(data)=>{
+//     this.setstate({selection:data})
+// }
   handleUserInput(e) {
     clearTimeout(this.timeout)
     this.setState({
       userInput: e.target.value
-    });
+    })
   }
   decrementPage () {
     const newPage = this.state.page - 1
