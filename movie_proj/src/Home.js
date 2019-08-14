@@ -10,12 +10,12 @@ export class Home extends React.Component {
   constructor(props) {
     super(props);
 			this.state = { 
-        selection: 'popular?',
+        selection: 'popular',
         userInput: '',
         items: [],
         isLoading: true,
         page: 1,
-        max_pages: 1
+        max_pages: undefined
       };
        this.handleUserInput = this.handleUserInput.bind(this)
        this.decrementPage = this.decrementPage.bind(this)
@@ -24,63 +24,32 @@ export class Home extends React.Component {
   }
 
   componentDidMount() {
-    fetch(API_POPULAR)
-    .then(response => response.json())
-    .then(json => {
-      this.setState({ 
-        items: json.results, 
-        isLoading: false,
-        max_pages: json.total_pages
-       });
-    });
+    this.fetchMovies ()
+  }
+
+  fetchMovies () {
+    var selection = this.state.userInput ? '' : this.state.selection
+    var inputSearch = (this.state.userInput === '') ? '' : '&query=' + this.state.userInput
+    var search = (this.state.userInput === '') ? 'movie/' : 'search/movie'
+    //this.timeout = setTimeout( () =>
+      fetch(API_SEARCH + search + selection + '?' + API_KEY + language + '&page=' + this.state.page + inputSearch )
+      .then(response => response.json())
+      .then(json => {
+        this.setState({ 
+          items: json.results, 
+          isLoading: false,
+          max_pages: json.total_pages
+          });
+      })//, delay)
   }
 
   componentDidUpdate(prevProps, prevState) {
-    var timeoutID
-    if (prevState.userInput !== this.state.userInput || 
-      prevState.page !== this.state.page) {
-        if (prevState.userInput !== this.state.userInput)
-          this.setState({page: 1});
-        if (this.state.userInput === '' && 
-        (prevState.userInput !== this.state.userInput || this.state.page === 1) ) {
-          this.timeout = setTimeout( () =>
-          fetch(API_POPULAR)
-          .then(response => response.json())
-          .then(json => {
-            this.setState({
-              selection: 'popular?',
-              items: json.results, 
-              isLoading: false,
-              max_pages: json.total_pages
-             });
-          }), delay);
-        } else if (this.state.userInput === '' && (prevState.page !== this.state.page)) {
-          this.timeout = setTimeout( () =>
-          fetch(API_SEARCH + this.state.selection + API_KEY + language + '&page=' + this.state.page)
-          .then(response => response.json())
-          .then(json => {
-            this.setState({ 
-              items: json.results, 
-              isLoading: false,
-              max_pages: json.total_pages
-             });
-          }), delay);
-        } else {
-          this.timeout = setTimeout( () =>
-          fetch(getSearchUrl(this.state.userInput, this.state.page))
-          .then(response => response.json())
-          .then(json => {
-          this.setState({ 
-            selection: '',
-            items: json.results, 
-            isLoading: false,
-            max_pages: json.total_pages });
-          }), delay);
-          console.log(this.state.items)
+    if (prevState.userInput !== this.state.userInput || prevState.page !== this.state.page) {
+        if (prevState.userInput !== this.state.userInput) {
+          this.setState({page: 1})
         }
+        this.fetchMovies ()
       }
-      //clearTimeout(this.timeout)
-
   }
 
   render() {
@@ -102,34 +71,34 @@ export class Home extends React.Component {
         <PopularSelections value={this.state.selection}/>
         <h1>Input: {this.state.userInput}</h1>
         <div className="changePage">
-          <button className="Selections" id="decrement" onClick={this.decrementPage}>Previous</button>
+          <button className="SelectionOff" id="decrement" onClick={this.decrementPage}>Previous</button>
           <h1 className="changePageNumber">{this.state.page}</h1>
-          <button className="Selections" id="increment" onClick={this.incrementPage}>Next</button>
+          <button className="SelectionOff" id="increment" onClick={this.incrementPage}>Next</button>
         </div>
         <h1>{this.state.max_pages} pages</h1>
         <MovieView items={items}/>
         </div>
-      );
+      )
     //}
   }
 
   handleUserInput(e) {
-    clearTimeout(this.timeout);
+    clearTimeout(this.timeout)
     this.setState({
       userInput: e.target.value
     });
   }
   decrementPage () {
     const newPage = this.state.page - 1
-    this.timeout = setTimeout( () =>
+    //this.timeout = setTimeout( () =>
     this.setState({ page: newPage < 1 ? 1 : newPage })
-    , shortDelay);
+    //, shortDelay);
   }
   incrementPage () {
     const newPage = this.state.page + 1
-    this.timeout = setTimeout( () =>
-    this.setState({ page: newPage > this.state.max_pages ? this.state.page : newPage})
-    , shortDelay);
+    //this.timeout = setTimeout( () =>
+    this.setState({ page: newPage <= this.state.max_pages ? newPage : this.state.page})
+    //, shortDelay);
   }
 }
 
