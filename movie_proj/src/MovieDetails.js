@@ -28,7 +28,7 @@ export function MovieDetails({ match }) {
     return (
       <div className="App-body">
       <div>
-           <img key={item.id} height="400px"
+           <img key={item.id}
               src={`https://image.tmdb.org/t/p/w500/${item.backdrop_path}`} 
               alt={`${item.title}`}/>
           <h1>{item.title}</h1>

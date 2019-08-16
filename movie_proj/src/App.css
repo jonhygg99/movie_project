@@ -58,7 +58,7 @@
   color: white;
 }
 
-.Search-bar {
+.SearchBar {
   animation: search-big-square 4s ease;/*need to expand*/
   width: 30%;
   min-width: 200px;;
@@ -139,7 +139,7 @@
   vertical-align: middle;
 }
 
-.changePageNumber {
+.PageNumber {
   margin-left: 20px;
   margin-right: 20px;
 }
