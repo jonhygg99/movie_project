@@ -4,8 +4,8 @@ import { isEmpty } from 'lodash'
 
 export class MovieView extends React.Component {
   render (){  
-    const errorMessage = <h1>No movie found, try by another name</h1>
-    const ImageNotFound = <img className="ImageNotFound" src='https://i.ytimg.com/vi/L1tx-wAI6Nw/maxresdefault.jpg' alt='ImageNotFound'/>
+    const errorMessage = <h1 className='errorMessage'>No movie found, try by another name</h1>
+    const ImageNotFound = <img className='ImageNotFound' src='https://i.ytimg.com/vi/L1tx-wAI6Nw/maxresdefault.jpg' alt='ImageNotFound'/>
     const showImage = (Array.isArray(this.props.items) && this.props.items.map((movie) => (
       <Link to={`/movie/${movie.id}`} key={movie.id}>
         {`${movie.poster_path}` === 'null' ? ImageNotFound : (
@@ -15,7 +15,7 @@ export class MovieView extends React.Component {
         )}
    </Link>)))
     return ( 
-        <div className="Movie-view">
+        <div className='Movie-view'>
         {Array.isArray(this.props.items) && !isEmpty(this.props.items) 
           ? showImage : errorMessage }
       </div>

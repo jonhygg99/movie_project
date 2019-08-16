@@ -3,7 +3,7 @@ import { PopularSelections } from './PopularSelections'
 import { API_SEARCH, API_KEY, language, delay, shortDelay } from './constants'
 import { SearchBar } from './SearchBar'
 import { MovieView } from './MovieView'
-import { MovePage } from './MovePage'
+import { ChangePage } from './ChangePage'
 import { isEmpty } from 'lodash'
 
 export class Home extends React.Component {
@@ -47,7 +47,8 @@ export class Home extends React.Component {
     if (prevState.userInput !== this.state.userInput || 
       prevState.page !== this.state.page ||
       prevState.selection !== this.state.selection) {
-        if (prevState.userInput !== this.state.userInput) {
+        if (prevState.userInput !== this.state.userInput ||
+            prevState.selection !== this.state.selection) {
           this.setState({page: 1})
         }
         this.fetchMovies ()
@@ -66,12 +67,11 @@ export class Home extends React.Component {
        return (
          <div className='App-body'>
             <SearchBar value={this.state.userInput} updateInput={this.updateInput}/>
-            <PopularSelections value={this.state.selection} updateSelection={this.updateSelection}/>
-            <h1>Input: {this.state.userInput}</h1>
-            {!isEmpty(items) ? 
-            <MovePage value={this.state.page} max={this.state.max_pages} updatePage={this.updatePage}/> : ''}
-            <h1>{this.state.max_pages} pages</h1>
+            {this.state.userInput === '' ? <PopularSelections value={this.state.selection} updateSelection={this.updateSelection}/> : ''}
             <MovieView items={items}/>
+            {!isEmpty(items) ? 
+            <ChangePage value={this.state.page} max={this.state.max_pages} updatePage={this.updatePage}/> : ''}
+            {this.state.max_pages === 0 ? '' : <h1>{this.state.max_pages} pages</h1>}
         </div>
       )
     //}

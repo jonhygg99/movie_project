@@ -67,12 +67,16 @@
   font-weight: bold;
   font-size: medium;
   padding: 15px 22px;
-  margin: 10px 5px;
+  margin: 15px;
   border: 6px solid #8842d5;
-  border-radius: 40px;  
+  border-radius: 50px;  
   background-color: whitesmoke;
   color: black;
   outline: none;
+}
+
+.errorMessage {
+  margin-bottom: 40px;
 }
 
 .Selection-type {
@@ -85,6 +89,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  margin-bottom: 15px;
 }
 
 .SelectionOff, .SelectionOn {
